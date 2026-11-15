@@ -102,27 +102,32 @@ function computeTransitView(mission, spacecraft) {
             : `Your fuel reserve for changing speed and direction (delta-v) was a comfortable ${(margin * 100).toFixed(1)}% above the minimum needed.`
     });
 
-    if (tight) {
-        return {
-            phase: 'transit',
-            phaseIndex: 1,
-            narrative: getTransitNarrative(mission),
-            goal: 'Arrive with enough fuel and power left to complete the mission.',
-            status: [{ label: 'Fuel Reserve for Maneuvering (Delta-v)', percent: margin, threshold: SIMULATION_THRESHOLDS.deltaV_margin_tight }],
-            decision: {
-                id: 'transit_correction',
-                prompt: "You need to adjust your course. Your fuel reserve is tight — what do you want to do?",
-                options: [
-                    { id: 'slow_correction', label: 'Slow, fuel-saving correction', detail: `Takes about ${Math.round(mission.duration * 0.01)} extra days, but protects your remaining fuel.` },
-                    { id: 'fast_correction', label: 'Fast correction, stay on schedule', detail: 'No delay, but uses more of your remaining fuel.' }
-                ]
-            },
-            isLastPhase: false
-        };
+    // Bug fix: always show the Transit phase itself, regardless of whether
+    // a decision is needed. Previously, when the margin wasn't tight, this
+    // function skipped straight to computeArrivalView() internally and
+    // returned ITS view instead, so the player never saw a Transit screen
+    // at all — advancePhase() would then be called from the Launch screen
+    // and land directly on Arrival.
+    if (!tight) {
+        gameState.simulation.phaseData.deltaVMarginAtArrival = margin;
     }
 
-    gameState.simulation.phaseData.deltaVMarginAtArrival = margin;
-    return computeArrivalView(mission, spacecraft);
+    return {
+        phase: 'transit',
+        phaseIndex: 1,
+        narrative: getTransitNarrative(mission),
+        goal: 'Arrive with enough fuel and power left to complete the mission.',
+        status: [{ label: 'Fuel Reserve for Maneuvering (Delta-v)', percent: margin, threshold: SIMULATION_THRESHOLDS.deltaV_margin_tight }],
+        decision: tight ? {
+            id: 'transit_correction',
+            prompt: "You need to adjust your course. Your fuel reserve is tight — what do you want to do?",
+            options: [
+                { id: 'slow_correction', label: 'Slow, fuel-saving correction', detail: `Takes about ${Math.round(mission.duration * 0.01)} extra days, but protects your remaining fuel.` },
+                { id: 'fast_correction', label: 'Fast correction, stay on schedule', detail: 'No delay, but uses more of your remaining fuel.' }
+            ]
+        } : null,
+        isLastPhase: false
+    };
 }
 
 function getTransitNarrative(mission) {
@@ -249,33 +254,43 @@ function computeScienceOpsView(mission, spacecraft) {
         { label: 'Data You Can Send Home Each Day', text: `${resources.data.transmissionCapacity.toFixed(1)} GB` }
     ];
 
-    if (dataOverflow && scienceObjectives.length > 1) {
+    const needsDecision = dataOverflow && scienceObjectives.length > 1;
+
+    if (needsDecision) {
         appendSimulationLog({
             phase: 'science_ops',
             type: 'warning',
             message: `Your instruments collect more data each day (${resources.data.generated.toFixed(1)} GB) than your antenna can send to Earth (${resources.data.transmissionCapacity.toFixed(1)} GB). This comes from the instruments and antenna you chose while building your spacecraft.`
         });
-        return {
-            phase: 'science_ops',
-            phaseIndex: 3,
-            narrative: getScienceOpsNarrative(mission),
-            goal: "Use your instruments to complete as many mission goals as you can.",
-            status,
-            decision: {
-                id: 'data_priority',
-                prompt: "You're collecting more data than you can send home right now. Which goal should get priority?",
-                options: scienceObjectives.map((o, i) => ({ id: `prioritize_${i}`, label: `Prioritize: ${o.objective}` }))
-            },
-            isLastPhase: false
-        };
+    } else {
+        if (dataOverflow) {
+            appendSimulationLog({ phase: 'science_ops', type: 'info', message: "You collected more data than you could send home, but this mission only has one science goal that needs data, so there's no tradeoff to make." });
+        }
+        // No decision needed — objective results are deterministic given
+        // what's already known, so they can be finalized now. The player
+        // still sees this phase's own screen before continuing (bug fix
+        // below), they just won't be asked to choose anything here.
+        finalizeObjectiveResults(mission, spacecraft, null);
     }
 
-    if (dataOverflow) {
-        appendSimulationLog({ phase: 'science_ops', type: 'info', message: "You collected more data than you could send home, but this mission only has one science goal that needs data, so there's no tradeoff to make." });
-    }
-
-    finalizeObjectiveResults(mission, spacecraft, null);
-    return computeDataReturnView(mission);
+    // Bug fix: always show the Science Operations phase itself, regardless
+    // of whether a decision is needed. Previously, whenever there was no
+    // data-priority decision to make, this function skipped straight to
+    // computeDataReturnView() internally and returned ITS view instead, so
+    // the player never saw a Science Operations screen at all.
+    return {
+        phase: 'science_ops',
+        phaseIndex: 3,
+        narrative: getScienceOpsNarrative(mission),
+        goal: "Use your instruments to complete as many mission goals as you can.",
+        status,
+        decision: needsDecision ? {
+            id: 'data_priority',
+            prompt: "You're collecting more data than you can send home right now. Which goal should get priority?",
+            options: scienceObjectives.map((o, i) => ({ id: `prioritize_${i}`, label: `Prioritize: ${o.objective}` }))
+        } : null,
+        isLastPhase: false
+    };
 }
 
 function getScienceOpsNarrative(mission) {

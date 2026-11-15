@@ -26,6 +26,99 @@ export function showMissionBriefing(mission) {
     
     // Contextual tip for this screen
     renderContextualTip('missionBriefing', document.querySelector('.mission-briefing .glass-panel'));
+    
+    // Real NASA/JPL data (asteroid mission only) — fire-and-forget, never
+    // blocks or alters the rest of the briefing/game if it fails.
+    if (mission.id === 'asteroid') {
+        loadRealAsteroidData();
+    }
+}
+
+/**
+ * Fetch real Bennu data from the official NASA/JPL Small-Body Database API
+ * and render it into the #real-asteroid-data placeholder. Read-only,
+ * display-only — never touches mission logic, scoring, or validation.
+ */
+async function loadRealAsteroidData() {
+    const target = document.getElementById('real-asteroid-data');
+    if (!target) return;
+    
+    const SBDB_URL = 'https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=Bennu&phys-par=1';
+    const SBDB_DOC_URL = 'https://ssd-api.jpl.nasa.gov/doc/sbdb.html';
+    
+    try {
+        const response = await fetch(SBDB_URL);
+        if (!response.ok) {
+            throw new Error(`NASA/JPL API returned HTTP ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Guard again in case the player navigated away before this resolved
+        const stillPresent = document.getElementById('real-asteroid-data');
+        if (!stillPresent) return;
+        
+        renderRealAsteroidData(stillPresent, data, SBDB_DOC_URL);
+    } catch (error) {
+        console.warn('⚠️ Could not load live NASA/JPL asteroid data:', error);
+        const stillPresent = document.getElementById('real-asteroid-data');
+        if (stillPresent) {
+            stillPresent.innerHTML = `
+                <p class="nasa-data-error">
+                    ⚠️ Couldn't reach the NASA/JPL Small-Body Database right now.
+                    This is a live external API, so it can be temporarily unavailable
+                    or blocked by network restrictions. The rest of the game is
+                    unaffected — you can continue your mission normally.
+                </p>
+            `;
+        }
+    }
+}
+
+/**
+ * Find a named entry in an SBDB elements/phys_par array.
+ */
+function findSbdbField(list, name) {
+    if (!Array.isArray(list)) return null;
+    return list.find(item => item.name === name) || null;
+}
+
+/**
+ * Render the fetched SBDB data. Only shows fields the API actually
+ * returned — never invents or fills in missing values.
+ */
+function renderRealAsteroidData(target, data, docUrl) {
+    const obj = data.object || {};
+    const orbitElements = (data.orbit && data.orbit.elements) || [];
+    const physParams = data.phys_par || [];
+    
+    const semiMajorAxis = findSbdbField(orbitElements, 'a');
+    const eccentricity = findSbdbField(orbitElements, 'e');
+    const diameter = findSbdbField(physParams, 'diameter');
+    
+    const rows = [];
+    rows.push(`<li><strong>Name:</strong> ${obj.fullname || 'Bennu'}</li>`);
+    if (obj.orbit_class && obj.orbit_class.name) {
+        rows.push(`<li><strong>Orbit classification:</strong> ${obj.orbit_class.name} (${obj.orbit_class.code || ''})</li>`);
+    }
+    if (semiMajorAxis) {
+        rows.push(`<li><strong>Semi-major axis:</strong> ${semiMajorAxis.value} ${semiMajorAxis.units || ''}</li>`);
+    }
+    if (eccentricity) {
+        rows.push(`<li><strong>Eccentricity:</strong> ${eccentricity.value}</li>`);
+    }
+    if (diameter) {
+        rows.push(`<li><strong>Diameter:</strong> ${diameter.value} ${diameter.units || ''}</li>`);
+    } else {
+        rows.push(`<li><em>Diameter not provided by the API for this query.</em></li>`);
+    }
+    
+    target.innerHTML = `
+        <p class="nasa-data-intro">This is real data about the asteroid Bennu, fetched live from NASA/JPL — not part of the game's invented mission numbers.</p>
+        <ul class="nasa-data-list">${rows.join('')}</ul>
+        <p class="nasa-data-attribution">
+            Data source: <a href="${docUrl}" target="_blank" rel="noopener noreferrer">NASA/JPL Small-Body Database (SBDB)</a>
+        </p>
+    `;
 }
 
 /**
@@ -63,6 +156,15 @@ function renderBriefingContent(mission) {
                 ${getScenarioExplanation(mission.id)}
             </div>
         </div>
+
+        ${mission.id === 'asteroid' ? `
+        <div class="briefing-section">
+            <h3 class="briefing-section-title">🛰️ Real Asteroid Data (NASA/JPL)</h3>
+            <div id="real-asteroid-data" class="real-asteroid-data">
+                <p class="nasa-data-loading">Loading real data from NASA/JPL...</p>
+            </div>
+        </div>
+        ` : ''}
 
         <div class="briefing-section">
             <h3 class="briefing-section-title">🎯 Your Mission Objectives</h3>

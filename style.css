@@ -1952,3 +1952,52 @@ body::before {
         padding: 15px;
     }
 }
+
+/* ================================
+   REAL ASTEROID DATA (NASA/JPL SBDB)
+   ================================ */
+
+.real-asteroid-data {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 4px solid var(--neon-cyan);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.nasa-data-loading {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.nasa-data-error {
+    color: var(--warning);
+    line-height: 1.6;
+}
+
+.nasa-data-intro {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.nasa-data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px 0;
+}
+
+.nasa-data-list li {
+    padding: 4px 0;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.nasa-data-attribution {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.nasa-data-attribution a {
+    color: var(--neon-cyan);
+    text-decoration: underline;
+}
