@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBITAL — Beyond the Mission | NASA Space Apps Challenge 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <div class="logo-icon">🛰️</div>
+                <h1>ORBITAL</h1>
+            </div>
+            <p class="tagline">Beyond the Mission</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item active">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-text">Home</span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon">🚀</span>
+                <span class="nav-text">Missions</span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">Resources</span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon">📖</span>
+                <span class="nav-text">How to Play</span>
+            </li>
+            <li class="nav-item">
+                <span class="nav-icon">ℹ️</span>
+                <span class="nav-text">About</span>
+            </li>
+        </ul>
+        
+        <div class="sidebar-footer">
+            <p>NASA Space Apps Challenge 2026</p>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h2>Mission Control Center</h2>
+                <div class="status-indicator">
+                    <span class="status-dot"></span>
+                    <span>System Online</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="glass-panel">
+                <h2 class="section-title">Welcome, Commander</h2>
+                <p class="welcome-text">
+                    Welcome to ORBITAL! You're the engineer in charge of a real space mission.
+                    Pick a destination, design your spacecraft, choose your instruments, and find out
+                    if your mission succeeds. Every choice you make affects the outcome — so choose wisely.
+                </p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">03</div>
+                        <div class="stat-label">Available Missions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">100%</div>
+                        <div class="stat-label">Systems Ready</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">∞</div>
+                        <div class="stat-label">Possibilities</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Selection -->
+        <section class="mission-selection">
+            <h2 class="section-title">Select Your Mission</h2>
+            <div class="mission-cards">
+                <!-- Mars Exploration -->
+                <div class="mission-card" data-mission="mars">
+                    <div class="mission-icon">🔴</div>
+                    <h3 class="mission-title">Mars Exploration</h3>
+                    <p class="mission-description">
+                        Lead a pioneering expedition to the Red Planet. Establish a sustainable base, 
+                        conduct scientific research, and search for signs of ancient life.
+                    </p>
+                    <div class="mission-specs">
+                        <div class="spec">
+                            <span class="spec-label">Duration:</span>
+                            <span class="spec-value">687 days</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Difficulty:</span>
+                            <span class="spec-value difficulty-high">High</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Budget:</span>
+                            <span class="spec-value">$2.5B</span>
+                        </div>
+                    </div>
+                    <div class="mission-objectives">
+                        <h4>Key Objectives:</h4>
+                        <ul>
+                            <li>Land safely on Mars surface</li>
+                            <li>Deploy research equipment</li>
+                            <li>Collect geological samples</li>
+                            <li>Establish communication relay</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Earth Observation -->
+                <div class="mission-card" data-mission="earth">
+                    <div class="mission-icon">🌍</div>
+                    <h3 class="mission-title">Earth Observation</h3>
+                    <p class="mission-description">
+                        Deploy an advanced satellite network to monitor climate change, track natural disasters, 
+                        and support global environmental research initiatives.
+                    </p>
+                    <div class="mission-specs">
+                        <div class="spec">
+                            <span class="spec-label">Duration:</span>
+                            <span class="spec-value">365 days</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Difficulty:</span>
+                            <span class="spec-value difficulty-medium">Medium</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Budget:</span>
+                            <span class="spec-value">$1.2B</span>
+                        </div>
+                    </div>
+                    <div class="mission-objectives">
+                        <h4>Key Objectives:</h4>
+                        <ul>
+                            <li>Launch satellite constellation</li>
+                            <li>Monitor climate patterns</li>
+                            <li>Track deforestation rates</li>
+                            <li>Provide disaster early warning</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Asteroid Research -->
+                <div class="mission-card" data-mission="asteroid">
+                    <div class="mission-icon">☄️</div>
+                    <h3 class="mission-title">Asteroid Research</h3>
+                    <p class="mission-description">
+                        Intercept and study a near-Earth asteroid. Extract valuable resources, 
+                        analyze composition, and assess planetary defense capabilities.
+                    </p>
+                    <div class="mission-specs">
+                        <div class="spec">
+                            <span class="spec-label">Duration:</span>
+                            <span class="spec-value">540 days</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Difficulty:</span>
+                            <span class="spec-value difficulty-extreme">Extreme</span>
+                        </div>
+                        <div class="spec">
+                            <span class="spec-label">Budget:</span>
+                            <span class="spec-value">$1.8B</span>
+                        </div>
+                    </div>
+                    <div class="mission-objectives">
+                        <h4>Key Objectives:</h4>
+                        <ul>
+                            <li>Rendezvous with target asteroid</li>
+                            <li>Deploy mining equipment</li>
+                            <li>Analyze mineral composition</li>
+                            <li>Test deflection technology</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resource Dashboard -->
+        <section class="dashboard-section">
+            <div class="dashboard-grid">
+                <!-- Resource Overview -->
+                <div class="glass-panel resource-panel">
+                    <h3 class="panel-title">Resource Overview</h3>
+                    <div class="resource-list">
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <span class="resource-icon">💰</span>
+                                <span class="resource-name">Budget</span>
+                            </div>
+                            <div class="resource-bar">
+                                <div class="resource-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="resource-value">$5.0B / $5.0B</span>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <span class="resource-icon">⚡</span>
+                                <span class="resource-name">Power</span>
+                            </div>
+                            <div class="resource-bar">
+                                <div class="resource-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="resource-value">0 W / 0 W</span>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <span class="resource-icon">⚖️</span>
+                                <span class="resource-name">Mass</span>
+                            </div>
+                            <div class="resource-bar">
+                                <div class="resource-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="resource-value">0 kg / 10000 kg</span>
+                        </div>
+                        <div class="resource-item">
+                            <div class="resource-info">
+                                <span class="resource-icon">📊</span>
+                                <span class="resource-name">Data</span>
+                            </div>
+                            <div class="resource-bar">
+                                <div class="resource-fill" style="width: 100%"></div>
+                            </div>
+                            <span class="resource-value">0 GB/day / 0 GB/day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mission Overview -->
+                <div class="glass-panel mission-overview-panel">
+                    <h3 class="panel-title">Mission Overview</h3>
+                    <div class="mission-status">
+                        <div class="status-message">
+                            <p class="status-text">No mission selected</p>
+                            <p class="status-subtext">Pick a mission card above to start planning your mission</p>
+                        </div>
+                        <div class="mission-details" style="display: none;">
+                            <h4 class="selected-mission-title"></h4>
+                            <p class="selected-mission-description"></p>
+                            <div class="mission-requirements">
+                                <h5>Mission Goals:</h5>
+                                <ul class="requirements-list"></ul>
+                            </div>
+                            <button class="start-mission-btn" id="start-mission-btn">
+                                <span class="btn-icon">🚀</span>
+                                <span>Build Spacecraft</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Briefing Section (Phase A) -->
+        <section class="mission-briefing" style="display: none;">
+            <div class="glass-panel">
+                <div id="briefing-content">
+                    <!-- Content generated by missionBriefingUI.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Spacecraft Builder Section (Phase 2) -->
+        <section class="spacecraft-builder" style="display: none;">
+            <div class="glass-panel">
+                <h2 class="section-title">🛰️ Spacecraft Builder</h2>
+                <p class="welcome-text">Build your spacecraft by picking one option in each category below. Every choice affects your weight, power, budget, and your chances of success.</p>
+                
+                <!-- Bus Selection -->
+                <div id="bus-components" class="component-category"></div>
+                
+                <!-- Power Selection -->
+                <div id="power-components" class="component-category"></div>
+                
+                <!-- Propulsion Selection -->
+                <div id="propulsion-components" class="component-category"></div>
+                
+                <!-- Communications Selection -->
+                <div id="communications-components" class="component-category"></div>
+                
+                <!-- Actions -->
+                <div class="builder-actions">
+                    <button id="reset-configuration-btn" class="secondary-btn">
+                        <span>🔄 Reset Configuration</span>
+                    </button>
+                    <button id="continue-to-instruments-btn" class="primary-btn">
+                        <span>Continue to Instruments →</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instrument Selection Section (Phase 2) -->
+        <section class="instrument-selection" style="display: none;">
+            <div class="glass-panel">
+                <h2 class="section-title">🔬 Scientific Instruments</h2>
+                <p class="welcome-text">Choose instruments to study your mission's science goals. Each one uses power, weight, and budget — so choose wisely.</p>
+                
+                <!-- Available Instruments -->
+                <div id="available-instruments" class="instruments-container"></div>
+                
+                <!-- Selected Instruments -->
+                <div id="selected-instruments-list" class="selected-instruments-container"></div>
+                
+                <!-- Science Coverage -->
+                <div id="science-coverage" class="science-coverage-container"></div>
+                
+                <!-- Validation Panel -->
+                <div id="validation-panel" class="validation-container"></div>
+                
+                <!-- Actions -->
+                <div class="builder-actions">
+                    <button id="back-to-builder-btn" class="secondary-btn">
+                        <span>← Back to Builder</span>
+                    </button>
+                    <button id="start-mission-final-btn" class="primary-btn">
+                        <span>🚀 Start Mission</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Simulation Section -->
+        <section class="mission-simulation" style="display: none;">
+            <div class="glass-panel">
+                <div id="simulation-content">
+                    <!-- Content generated by simulationUI.js -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Results Section -->
+        <section class="mission-results" style="display: none;">
+            <div class="glass-panel">
+                <div id="results-content">
+                    <!-- Content generated by missionResultsUI.js -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- How to Play Guide Overlay -->
+    <div id="tutorial-overlay" class="tutorial-overlay" style="display: none;"></div>
+
+    <!-- Modular ES6 system -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
